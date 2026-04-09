@@ -1,35 +1,43 @@
-class MainTest {
-import org.junit.jupiter.api.Test;
 import java.util.*;
 import java.util.stream.Collectors;
-import static org.junit.jupiter.api.Assertions.*;
 
-    class Bogie {
-        String name;
-        int capacity;
+class Bogie {
+    String name;
+    int capacity;
 
-        Bogie(String name, int capacity) {
-            this.name = name;
-            this.capacity = capacity;
-        }
+    Bogie(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
     }
 
-    public class TrainAppTest {
+    @Override
+    public String toString() {
+        return name + " -> " + capacity;
+    }
+}
 
-        @Test
-        void testFilter_CapacityGreaterThan60() {
+public class MainTest {
 
-            List<Bogie> bogies = new ArrayList<>();
-            bogies.add(new Bogie("Sleeper", 72));
-            bogies.add(new Bogie("AC Chair", 60));
-            bogies.add(new Bogie("First Class", 40));
+    public static void main(String[] args) {
 
-            List<Bogie> result = bogies.stream()
-                    .filter(b -> b.capacity > 60)
-                    .collect(Collectors.toList());
+        System.out.println("=== Train Consist Management App ===");
 
-            assertEquals(1, result.size());
-            assertEquals("Sleeper", result.get(0).name);
+        // Create list of bogies
+        List<Bogie> bogies = new ArrayList<>();
+        bogies.add(new Bogie("Sleeper", 72));
+        bogies.add(new Bogie("AC Chair", 60));
+        bogies.add(new Bogie("Sleeper", 70));
+        bogies.add(new Bogie("First Class", 40));
+
+        // Group by bogie name/type
+        Map<String, List<Bogie>> groupedBogies =
+                bogies.stream()
+                        .collect(Collectors.groupingBy(b -> b.name));
+
+        // Display grouped result
+        System.out.println("\nGrouped Bogies:");
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
         }
     }
 }
